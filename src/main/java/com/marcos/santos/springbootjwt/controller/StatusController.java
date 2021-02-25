@@ -1,4 +1,4 @@
-package com.marcos.santos.springbootjwt.controller;
+	package com.marcos.santos.springbootjwt.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

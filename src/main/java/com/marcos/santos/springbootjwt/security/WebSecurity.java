@@ -1,9 +1,12 @@
 package com.marcos.santos.springbootjwt.security;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -15,12 +18,12 @@ import com.marcos.santos.springbootjwt.service.UserDetailsServiceImpl;
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
-	private UserDetailsServiceImpl userDetailsServiceImpl;
+	private UserDetailsServiceImpl userDetailsService;
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-	public WebSecurity(UserDetailsServiceImpl userDetailsServiceImpl, BCryptPasswordEncoder bCryptPasswordEncoder) {
-		super();
-		this.userDetailsServiceImpl = userDetailsServiceImpl;
+	public WebSecurity(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+		//super();
+		this.userDetailsService = userDetailsService;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 	
@@ -31,8 +34,21 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 			.permitAll()
 			.antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL)
 			.permitAll();
+		/*
+			.anyRequest().authenticated()
+			.and()
+			.addFilter(new JWTAuthenticationFilter(authenticationManager()))
+			.addFilter(new JWTA)
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		*/
 	}
 	
+	@Override
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+	}
+	
+	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());

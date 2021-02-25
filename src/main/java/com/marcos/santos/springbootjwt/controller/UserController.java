@@ -1,4 +1,4 @@
-package com.marcos.santos.springbootjwt.controller;
+ package com.marcos.santos.springbootjwt.controller;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class UserController {
 	private final UserDetailsServiceImpl userDetailsService;
 	
 	public UserController(UserDetailsServiceImpl userDetailsService) {
-		super();
+		//super();
 		this.userDetailsService = userDetailsService;
 	}
 

@@ -1,7 +1,10 @@
 package com.marcos.santos.springbootjwt.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,31 +20,33 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	public UserDetailsServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder) {
-		super();
+		//super();
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
+	
 		UserData user = findUser(userName);
 		if(user == null) {
 			throw new UsernameNotFoundException(userName);
 		}
-		return null;
+		
+		return new User(user.getUserName(), user.getPassword(), Collections.emptyList());
+			
 	}
 
 	private UserData findUser(String userName) {
 		
 		UserData user = new UserData();
 		user.setUserName("admin");
-		user.setPassword(bCryptPasswordEncoder.encode("nida"));
+		user.setPassword(bCryptPasswordEncoder.encode("nimda"));
 		
 		return user;
 	}
 	
-	public java.util.List<UserData> listUsers() {
-		ArrayList<UserData> lst = new ArrayList<UserData>();
+	public List<UserData> listUsers() {
+		ArrayList<UserData> lst = new ArrayList<>();
 		lst.add(findUser("admin"));
 		return lst;
 		
