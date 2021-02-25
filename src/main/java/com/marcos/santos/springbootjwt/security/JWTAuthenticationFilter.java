@@ -30,7 +30,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		this.authenticationManager = authenticationManager;
 	}
 	
-	public Authentication attempAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException {
+	@Override
+	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException {
 		
 		try {
 			
@@ -52,10 +53,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	}
 	
 	
+	@Override
 	protected void successfulAuthentication(HttpServletRequest req,
-			HttpServletResponse res,
-			FilterChain chain,
-			Authentication auth) throws IOException, ServletException {
+											HttpServletResponse res,
+											FilterChain chain,
+											Authentication auth) throws IOException, ServletException {
 		
 		String token = JWT.create()
 				.withSubject(((User) auth.getPrincipal()).getUsername())
